@@ -3,7 +3,7 @@
 
 ## 一. 环境搭建参考
 
-- 使用python内置的vevn虚拟环境
+- 使用python内置的venv虚拟环境
 
 ### 1. 激活虚拟环境(windows)
 
