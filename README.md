@@ -53,7 +53,7 @@ window.__NEXT_DATA__
 ## 三.项目文件架构图
 
 ``` txt
-ourcode/                            # [项目根目录]
+SimpleCrawler/                            # [项目根目录]
 ├── .venv/                          # 虚拟环境venv相关配置
 │   └── ...                         # 内置一些需要使用的python package,环境启动见README.md
 ├── base/                           # [基础文件]
@@ -74,7 +74,9 @@ ourcode/                            # [项目根目录]
 │   ├── file_tools.py               # 文件保存工具
 │   ├── video_down_wget.py          # 视频下载工具(wget下载)
 │   └── scraper_utils.py            # 浏览器界面辅助工具(如自动翻滚，关闭弹窗等)
-├── beifeng_ifeng_1.py              # ifeng爬虫核心模块v1.0备份
+├── additon/                        # [其他文件目录]
+│   ├── beifeng_ifeng_v1.0.py       # ifeng爬虫核心模块v1.0备份
+│   └── bili_crawler_v1.0.py        # bili爬虫核心模块v1.0备份
 ├── stealth.min.js                  # bilibli 反反爬js文件
 ├── test_playwright.py              # 环境测试文件
 ├── requirements.txt                # 依赖库清单
