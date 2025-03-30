@@ -53,7 +53,7 @@ window.__NEXT_DATA__
 ## 三.项目文件架构图
 
 ``` txt
-SimpleCrawler/                            # [项目根目录]
+SimpleCrawler/                      # [项目根目录]
 ├── .venv/                          # 虚拟环境venv相关配置
 │   └── ...                         # 内置一些需要使用的python package,环境启动见README.md
 ├── base/                           # [基础文件]
