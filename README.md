@@ -21,7 +21,13 @@
 
 - 注意： 表格仅供参考，如有问题，请以事实为准
 
-## 一. 环境搭建参考
+### 任务分工
+
+- [1，3, 7] 由 曹佳程 同学 完成
+- [2, 6] 由 王骏箫 同学 完成
+- [4，5] 由 吴尚哲 同学 完成
+
+## 二. 环境搭建参考
 
 - 使用python内置的venv虚拟环境
 
@@ -53,7 +59,7 @@ python test_playwright.py
 winget install --id GUN.Wget
 ```
 
-## 二. 提示
+## 三. 提示
 
 个别网站打开**开发者模式**后可以在**控制台**输入：
 
@@ -70,7 +76,7 @@ window.__NEXT_DATA__
 
 如果其有值，可以简化获取信息的流程
 
-## 三.项目文件架构图
+## 四.项目文件架构图
 
 ``` txt
 SimpleCrawler/                      # [项目根目录]
@@ -105,3 +111,8 @@ SimpleCrawler/                      # [项目根目录]
 ├── requirements.txt                # 依赖库清单
 └── main.py                         # 主入口文件(还没写)
 ```
+
+## 五.REFERENCES
+
+https://github.com/NanmiCoder/MediaCrawler
+https://github.com/AntiQuality/VideoCrawl
