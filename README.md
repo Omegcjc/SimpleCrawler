@@ -74,7 +74,7 @@ SimpleCrawler/                            # [项目根目录]
 │   ├── file_tools.py               # 文件保存工具
 │   ├── video_down_wget.py          # 视频下载工具(wget下载)
 │   └── scraper_utils.py            # 浏览器界面辅助工具(如自动翻滚，关闭弹窗等)
-├── additon/                        # [其他文件目录]
+├── additonal/                        # [其他文件目录]
 │   ├── beifeng_ifeng_v1.0.py       # ifeng爬虫核心模块v1.0备份
 │   └── bili_crawler_v1.0.py        # bili爬虫核心模块v1.0备份
 ├── stealth.min.js                  # bilibli 反反爬js文件
