@@ -19,7 +19,7 @@ from tools.scraper_utils import dynamic_scroll, close_popups
 
 logger = logging.getLogger(__name__)
 
-class Bilibilicrawel:
+class BilibiliCrawler:
     def __init__(self, headless: bool = True):
 
         self.client = baseClient(headless=headless)
@@ -399,7 +399,7 @@ if __name__ == "__main__":
     def test_search():
         """正常搜索测试"""
         try:
-            crawler = Bilibilicrawel(headless=False)
+            crawler = BilibiliCrawler(headless=False)
             crawler.crawl("search", "特朗普")
             print("搜索测试成功完成")
             return True
