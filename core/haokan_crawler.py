@@ -175,8 +175,12 @@ class HaokanCrawler:
             if not video_src:
                 raise ValueError("视频源地址为空")
                 
-            title_element = soup.find("meta", {"itemprop": "name"})
-            title = title_element.text.strip() if title_element else "无标题"
+            title_element = soup.find("title")
+            title = title_element.text.strip() if title_element else None
+            if not title:
+                raise ValueError("视频标题为空")
+            if title:
+                title = title.split(',')[0].strip()
             
             desc_element = soup.find("meta", {"itemprop": "description"})
             desc = desc_element.text.strip() if desc_element else None
