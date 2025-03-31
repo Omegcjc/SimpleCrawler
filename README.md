@@ -1,4 +1,4 @@
-
+![image](https://github.com/user-attachments/assets/7312bd3a-fa32-47b2-94b7-7512444fd56e)
 # SimpleCrawler
 
 > 网络信息内容安全：视频网站内容获取
@@ -35,6 +35,21 @@
 - [2，6] 由 王骏箫 同学 完成
 - [4，5] 由 吴尚哲 同学 完成
 
+### 爬取信息汇总
+| 序号 | 网站名称          | title  | video_ID | author | publish_date | video_url | download_url | channel | duration | views | desc | likes | coins | favs | shares |  
+|------|-------------------|--------|----------|--------|--------------|-----------|--------------|---------|----------|-------|------|-------|-------|------|--------|
+| 1    | v.ifeng.com       | ✅     | ✅      | ✅     | ✅          | ✅        |   ✅        | ✅      | ✅      | ✅    |✅   |✅     |       |      |        |
+| 2    | v.xiaodutv.com    |        |          |         |             |            |             |          |         |        |     |       |       |      |        |
+| 3    | www.thepaper.cn   | ✅     | ✅      | ✅     | ✅          | ✅        |   ✅        | ✅      | ✅      | ✅    |✅   |✅     |       |      |        |
+| 4    | haokan.baidu.com  | ✅     | ✅      | ✅     | ✅          | ✅        |   ✅        | ✅      | ✅      | ✅    |✅   |✅     |       |      |        |
+| 5    | www.ku6.com       | ✅     | ✅      |        |             | ✅        |   ✅        | ✅      |          |        |      |       |       |      |        |
+| 6    | v.cctv.cn         |        |          |        |             |            |             |          |          |        |      |      |       |      |        |
+| 7    | www.bilibili.com  | ✅     | ✅      | ✅     |             | ✅        |   ✅        | ✅      | ✅      | ✅    |✅   |✅     | ✅    |  ✅ |   ✅   |
+
+
+- **video_url** ： 可直达视频网页
+- **download_url** ： 视频资源下载地址
+- **channel** : 可能为频道，可能为keywords，具体在对应代码中找寻
 ## 二. 环境搭建参考
 
 - 使用python内置的venv虚拟环境
