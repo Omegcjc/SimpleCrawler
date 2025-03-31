@@ -1,4 +1,3 @@
-![image](https://github.com/user-attachments/assets/7312bd3a-fa32-47b2-94b7-7512444fd56e)
 # SimpleCrawler
 
 > 网络信息内容安全：视频网站内容获取
