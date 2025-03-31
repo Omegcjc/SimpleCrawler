@@ -98,11 +98,13 @@ SimpleCrawler/                      # [项目根目录]
 │   ├── ifengConfig.py              # ifeng基础配置(同上)
 │   ├── thepaperConfig.py           # thepaper基础配置(同上)
 │   ├── haokanConfig.py             # haokan基础配置(同上)
+│   ├── ku6Config.py                # ku6基础配置(同上)
 │   └── config.py                   # 日志记录基础配置文件(简写，可按照需要更改)
 ├── core/                           # [核心逻辑]
 │   ├── bili_crawler.py             # bilibili爬虫核心模块
 │   ├── ifeng_crawler.py            # ifeng爬虫核心模块 
 │   ├── thepaper_crawler.py         # thepaper爬虫核心模块
+│   ├── ku6_crawler.py              # ku6爬虫核心模块
 │   └── haokan_crawler.py           # haokan爬虫核心模块
 ├── data/                           # [输出目录]                
 │   └── */*                         # 输出文件path自定义
@@ -111,9 +113,10 @@ SimpleCrawler/                      # [项目根目录]
 │   ├── video_down_wget.py          # 视频下载工具(wget下载)
 │   └── scraper_utils.py            # 浏览器界面辅助工具(如自动翻滚，关闭弹窗等)
 ├── additonal/                      # [其他文件目录]
-│   ├── beifeng_ifeng_v1.0.py       # ifeng爬虫核心模块v1.0备份
-│   ├── haokan_crawler_v1.0.py      # haokan爬虫核心模块v1.0备份
-│   └── bili_crawler_v1.0.py        # bili爬虫核心模块v1.0备份
+│   ├── beifeng_ifeng_v1.0.py       # ifeng爬虫核心模块v1.0备份 - cjc
+│   ├── haokan_crawler_v1.0.py      # haokan爬虫核心模块v1.0备份 - wsz
+│   ├── ku6_crawler_v1.0.py         # ku6爬虫核心模块v1.0备份 - wsz
+│   └── bili_crawler_v1.0.py        # bili爬虫核心模块v1.0备份 - cjc
 ├── stealth.min.js                  # bilibli 反反爬js文件
 ├── test_playwright.py              # 环境测试文件
 ├── requirements.txt                # 依赖库清单
