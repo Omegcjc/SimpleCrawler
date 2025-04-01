@@ -50,7 +50,7 @@
 - **download_url** ： 视频资源下载地址
 - **channel** : 可能为频道，可能为keywords，具体在对应代码中找寻
 - **else** : 这里为bilibili特有的信息
-  - **coins**:投币数
+  - **coins**：投币数
   - **favs**：收藏数
   - **shares**：转发数
 ## 二. 环境搭建参考
