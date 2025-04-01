@@ -57,10 +57,9 @@
 
 - 使用python内置的venv虚拟环境
 
-### 1. 激活虚拟环境(windows)
-
-```powershell
-.\.venv\Scripts\activate.bat
+### 1. 安装必要环境
+```bash
+pip install -r requirements.txt
 ```
 
 ### 2. 安装浏览器驱动
