@@ -7,6 +7,8 @@
 > author:曹佳程，王骏箫，吴尚哲
 >
 > 持续更新中......
+>
+> 最新更新了框架，增加了基类的实现 - 2025.4.2
 
 ## 一. 项目介绍
 
@@ -123,35 +125,44 @@ window.__NEXT_DATA__
 
 ``` txt
 SimpleCrawler/                      # [项目根目录]
-├── .venv/                          # 虚拟环境venv相关配置
+├── .venv/                          # 虚拟环境venv相关配置 (如果使用venv虚拟环境)
 │   └── ...                         # 内置一些需要使用的python package,环境启动见README.md
+│ 
 ├── base/                           # [基础文件]
-|   └── base_client.py              # 客户端基本实现模块
+│   ├── base_client.py              # 客户端实现基类
+│   ├── base_config.py              # 配置实现基类
+│   └── base_crawler.py             # 爬虫实现基类
+│ 
 ├── config/                         # [配置文件]
-│   ├── BaseConfig.py               # 全局浏览器配置（代理/请求头等）
 │   ├── bilibiliConfig.py           # bilibili基础配置 (url, 文件保存路径等)
 │   ├── ifengConfig.py              # ifeng基础配置(同上)
 │   ├── thepaperConfig.py           # thepaper基础配置(同上)
 │   ├── haokanConfig.py             # haokan基础配置(同上)
 │   ├── ku6Config.py                # ku6基础配置(同上)
 │   └── config.py                   # 日志记录基础配置文件(简写，可按照需要更改)
+│ 
 ├── core/                           # [核心逻辑]
 │   ├── bili_crawler.py             # bilibili爬虫核心模块
 │   ├── ifeng_crawler.py            # ifeng爬虫核心模块 
 │   ├── thepaper_crawler.py         # thepaper爬虫核心模块
 │   ├── ku6_crawler.py              # ku6爬虫核心模块
 │   └── haokan_crawler.py           # haokan爬虫核心模块
+│ 
 ├── data/                           # [输出目录]                
 │   └── */*                         # 输出文件path自定义
+│ 
 ├── tools/                          # [工具脚本]
 │   ├── file_tools.py               # 文件保存工具
 │   ├── video_down_wget.py          # 视频下载工具(wget下载)
 │   └── scraper_utils.py            # 浏览器界面辅助工具(如自动翻滚，关闭弹窗等)
+│ 
 ├── additonal/                      # [其他文件目录]
+│   ├── SimpleCrawler.zip           # 旧版SimpleCrawler框架_2025.4.2之前 - cjc
 │   ├── beifeng_ifeng_v1.0.py       # ifeng爬虫核心模块v1.0备份 - cjc
 │   ├── haokan_crawler_v1.0.py      # haokan爬虫核心模块v1.0备份 - wsz
 │   ├── ku6_crawler_v1.0.py         # ku6爬虫核心模块v1.0备份 - wsz
 │   └── bili_crawler_v1.0.py        # bili爬虫核心模块v1.0备份 - cjc
+│ 
 ├── stealth.min.js                  # bilibli 反反爬js文件
 ├── test_playwright.py              # 环境测试文件
 ├── requirements.txt                # 依赖库清单
