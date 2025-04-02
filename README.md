@@ -9,6 +9,7 @@
 > 持续更新中......
 
 ## 一. 项目介绍
+
 本项目为**网络信息内容安全：视频网站内容获取**作业部分
 
 ### 任务描述
@@ -53,18 +54,33 @@
   - **coins**：投币数
   - **favs**：收藏数
   - **shares**：转发数
+
 ## 二. 环境搭建参考
 
 > 推荐使用虚拟环境，在虚拟环境中运行
 > 
 > 使用python内置的venv虚拟环境或者其他
 
-### 1. 安装必要环境
+### 1. 虚拟环境搭建
+
+> 这里提供 `vscode + venv`虚拟环境搭建参考
+
+- `ctrl + shift + p` > 选择 `Python: Create Environment`
+- 选择 `Venv` 在当前工作区创建`".venv"`虚拟环境
+- 选择`Python解释器`，该项目推荐使用`python 3.12.4 64bit`
+- 选择安装需要安转的依赖项`requirements.txt`
+- 等待环境创建成功，最终项目文件会有`.venv`文件夹，即环境创建成功
+- 激活虚拟环境：
+
 ```bash
-pip install -r requirements.txt
+.\.venv\Scripts\activate.bat
 ```
 
+> **务必记得需要启动虚拟环境**
+
 ### 2. 安装浏览器驱动
+
+本项目默认用户安装`chrome`浏览器，若未安装浏览器，请安装已下浏览器驱动
 
 ```powershell
 python -m playwright install chromium
