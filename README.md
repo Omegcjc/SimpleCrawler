@@ -82,7 +82,7 @@
 
 ### 2. 安装浏览器驱动
 
-本项目默认用户安装`chrome`浏览器，若未安装浏览器，请安装已下浏览器驱动
+本项目默认用户安装`chrome`浏览器，若未安装浏览器，请安装以下浏览器驱动
 
 ```powershell
 python -m playwright install chromium
