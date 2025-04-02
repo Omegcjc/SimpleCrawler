@@ -169,6 +169,11 @@ SimpleCrawler/                      # [项目根目录]
 └── main.py                         # 主入口文件(还没写)
 ```
 
+**注意**：
+  - 上述**additional**文件夹中的代码环境可能不同，也可能无法运行，只作为**备份文件夹**
+  - bilibili 视频下载并不完善
+  - 使用基类默认视频下载函数时(wget)，网站和网速影响较大，如ku6网站需要等待较长时间
+
 ## 五.REFERENCES
 
 https://github.com/NanmiCoder/MediaCrawler
