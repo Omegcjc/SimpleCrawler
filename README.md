@@ -258,3 +258,13 @@ python main.py
 https://github.com/NanmiCoder/MediaCrawler
 
 https://github.com/AntiQuality/VideoCrawl
+
+## 七.致谢
+
+- 感谢美好的大模型 Chatgpt + deepseek + copilot + kimi 让整个项目的代码编写进入快车道
+
+- 感谢曹佳程同学，王骏箫同学和吴尚哲同学的付出
+
+- 最后，感谢每一天，都是debug的一天......
+
+- 有任何问题可以联系曹佳程（3447999786@qq.com）
