@@ -219,7 +219,41 @@ SimpleCrawler/                      # [项目根目录]
   - cctv + baisou使用selunim作为自动化浏览器工具
   - 使用基类默认视频下载函数时(wget)，网站和网速影响较大，如ku6网站需要等待较长时间
 
-## 五.REFERENCES
+
+## 五.示例使用
+- 命令行输入参考：
+```bash
+# SimpleCrawler 命令行解析器
+# options:
+#   -h, --help            show this help message and exit
+#   -p PLATFORM, --platform PLATFORM
+#                         指定爬取平台（bilibili, ku6, haokan, ifeng, thepaper, cctv, baisou）
+#   -m {search,video}, --mode {search,video}
+#                         指定爬取类型（search 或 video）
+#   -t TARGET, --target TARGET
+#                         指定目标（搜索关键词或视频ID，多个ID用英文逗号分隔）
+#   --multithreaded       是否启用多线程下载（默认不启用）
+
+
+# 命令行输入参考：
+# 示例命令行输入：
+python main.py -p bilibili -m search -t "python爬虫"
+python main.py -p ku6 -m video -t "QdRTpiXkNC6iPrVnhaN5_tCg5UI." --multithreaded  # 启用多线程下载
+python main.py --help # 查看帮助信息
+
+# 手动输入示例：
+python main.py
+
+# 上述运行后结果示例：
+请输入平台名称（bilibili, bili, ku6, haokan, ifeng, thepaper, cctv, baisou）：ku6
+请输入爬取类型（搜索：search / 视频：video）：search
+请输入搜索关键词：特朗普
+是否启用多线程下载？（y/n，默认n）：n
+2025-04-10 16:38:52,895 - core.ku6_crawler - INFO - ku6网站无法搜索，请直接输入视频ID
+
+```
+
+## 六.REFERENCES
 
 https://github.com/NanmiCoder/MediaCrawler
 
