@@ -1,13 +1,8 @@
-
 from bs4 import BeautifulSoup
-
 from base.base_crawler import BaseCrawler
-from base.base_config import VIDEO_INFO_ALL
-
+from base.base_config import VIDEO_INFO_ALL, DownloadTask
 from tools.scraper_utils import dynamic_scroll
-
 from config.haokanConfig import HaokanCrawlerConfig
-
 # 日志系统
 from config.config import *
 logger = logging.getLogger(__name__)
@@ -26,18 +21,26 @@ class HaokanCrawler(BaseCrawler):
             for idex, result in enumerate(result_list):
                 if video_num >= self.max_video_num:
                     break
+
                 logger.info(f"======第{idex+1}个视频/新闻开始处理======")
                 try:
                     target_ID = result['ID']
                     is_video = self._process_video(target_ID)
-                    if not is_video:
-                        logger.info(f"======[{self.config.PLATFORM}]第{idex+1}个不是视频，停止处理======")
-                    else:
-                        logger.info(f"======[{self.config.PLATFORM}]第{idex+1}个是视频，处理完成======")
+                    if is_video:
+                        logger.info(f"======第{idex+1}个是视频，信息提取完成======")
                         video_num += 1
+                    else:
+                        logger.info(f"======第{idex+1}个不是视频，信息提取终止======")
                 except Exception as e:
                     logger.error(f"======[{self.config.PLATFORM}]第{idex+1}个视频/新闻处理异常======")
-                    pass
+                    continue
+            # 
+            # if self.mulithreaded_download:
+            #     self.download_manager.finish_adding_tasks()
+            #     logger.info(f"======[{self.config.PLATFORM}]已达到最大视频处理数量，停止添加======")
+            #     self.download_manager.wait_for_all_and_stop()
+
+            
         except Exception as e:
             logger.error(f"发生错误：{e}")
             raise            
@@ -90,7 +93,8 @@ class HaokanCrawler(BaseCrawler):
             self._pre_page_handle(video_url)
 
             html_content = self.page.content()
-            
+
+            # from pathlib import Path
             # debug_file = Path("./debug") / f"haokanvideo_{target}.html"
             # debug_file.parent.mkdir(parents=True, exist_ok=True)
             # with open(debug_file, "w", encoding="utf-8") as f:
@@ -117,13 +121,16 @@ class HaokanCrawler(BaseCrawler):
             desc_element = soup.find("meta", {"itemprop": "description"})
             desc = desc_element.text.strip() if desc_element else None
             
-            author_element = soup.find("div", class_="videoinfo-author-name")
+            author_element = soup.find("a", href=lambda x: x and x.startswith("/author/"))
             author = author_element.text.strip() if author_element else None
             
-            time_element = soup.find("span", class_="videoinfo-playtime")
-            publish_time = time_element.text.strip() if time_element else None
+            time_element = soup.find("div", class_="extrainfo-playnums")
+            if time_element:
+                publish_time = time_element.find("span", class_="extrainfo-playnums-label").next_sibling.strip()
+            else:
+                publish_time = None
             
-            duration_element = soup.find("span", class_="duration")
+            duration_element = soup.find("span", class_="durationTime")
             duration = duration_element.text.strip() if duration_element else None
             
             keywords_meta = soup.find("meta", {"itemprop": "keywords"})
@@ -143,7 +150,18 @@ class HaokanCrawler(BaseCrawler):
             video_info.views = video_data['views']
 
             self._save_videoinfo(video_info.dict_info_all(), target)
-            self._download_video(target, video_src)
+
+            if self.mulithreaded_download:
+                task = DownloadTask(
+                    url=video_src,
+                    save_dir=self.config.OUTPUT_VIDEOMP4_DIR,
+                    filename=self.config.OUTPUT_VIDEOMP4_FILENAME.format(target),
+                    referer=self.config.BASE_URL
+                )
+
+                self.download_manager.add_task(task)
+            else:
+                self._download_video(target, video_src)
 
         except Exception as e:
             logger.exception(f"视频处理异常:{e}")
@@ -191,15 +209,13 @@ class HaokanCrawler(BaseCrawler):
 # 测试实例
 # 命令行输入：python -m core.haokan_crawler
 
-# 在search时可能会出现0条数据的情况，请多次尝试运行上述代码，代码健壮性正在完善中......
-
 if __name__ == "__main__":
 
     config = HaokanCrawlerConfig()
     def test_search():
         """正常搜索测试"""
         try:
-            crawler = HaokanCrawler(config = config)
+            crawler = HaokanCrawler(config = config, mulithreaded_download=True)
             crawler.crawl("search", "特朗普")
             print("搜索测试成功完成")
             return True
