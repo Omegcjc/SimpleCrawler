@@ -1,10 +1,7 @@
 from bs4 import BeautifulSoup
-
 from base.base_crawler import BaseCrawler
 from base.base_config import VIDEO_INFO_ALL, DownloadTask
-
 from tools.scraper_utils import dynamic_scroll
-
 from config.ku6Config import Ku6CrawlerConfig
 
 # 日志系统
@@ -45,6 +42,7 @@ class Ku6Crawler(BaseCrawler):
             video_info.download_url = video_src                 # [视频信息] download_url - 视频下载地址
             video_info.title = video_data_parts["title"]        # [视频信息] title - 视频标题
             video_info.channel = video_data_parts['channel']    # [视频信息] keywords
+            video_info.author = video_data_parts['author'] 
 
             self._save_videoinfo(video_info.dict_info_all(), target)
 
@@ -70,6 +68,11 @@ class Ku6Crawler(BaseCrawler):
         try:
             soup = BeautifulSoup(html_content, "html.parser")
             # 获取title
+            from pathlib import Path
+            # debug_file = Path("./debug") / f"ku6.html"
+            # debug_file.parent.mkdir(parents=True, exist_ok=True)
+            # with open(debug_file, "w", encoding="utf-8") as f:
+            #     f.write(html_content)
             title_tag = soup.find("title")
             title  = title_tag.text.strip() if title_tag else "无标题"
 
@@ -80,12 +83,14 @@ class Ku6Crawler(BaseCrawler):
             # 获取视频链接
             video_tag = soup.find('video', class_='vjs-tech')
             video_src = video_tag['src'] if video_tag else None
-
+            author_div = soup.find("div", id="video-pc-author")
+            author_name = author_div.text.strip() if author_div else None
             # 输出提取的信息
             video_data = {
                 "title":title,
                 "channel":channel,
-                "video_url":video_src
+                "video_url":video_src,
+                "author":author_name
             }
 
             logger.info(f"视频信息提取成功")
