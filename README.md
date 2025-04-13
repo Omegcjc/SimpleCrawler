@@ -51,7 +51,7 @@
 
 #### 子任务二
 - 标识标准由大家共同商讨制定
-- 代码部分由曹佳程同学完成
+- 代码部分主要由曹佳程，吴尚哲同学完成
 
 ### 爬取信息汇总
 | 序号 | 网站名称          | title  | video_ID | author | publish_date | video_url | download_url | channel | duration | views | desc | likes | else |  
