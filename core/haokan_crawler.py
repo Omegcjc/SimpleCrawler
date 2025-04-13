@@ -1,11 +1,7 @@
-
 from bs4 import BeautifulSoup
-
 from base.base_crawler import BaseCrawler
 from base.base_config import VIDEO_INFO_ALL, DownloadTask
-
 from tools.scraper_utils import dynamic_scroll
-
 from config.haokanConfig import HaokanCrawlerConfig
 
 # 日志系统
