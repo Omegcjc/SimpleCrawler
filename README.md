@@ -64,27 +64,29 @@
 | 6    | v.cctv.cn         | ✅     | ✅      | ✅     | ✅         |✅          |  ✅         |  ✅    |  ✅      |        |✅   |✅     |       |
 | 7    | www.bilibili.com  | ✅     | ✅      | ✅     |             | ✅        |   ✅        | ✅      | ✅      | ✅    |✅   |✅     | ✅    |
 
+- **注意**
+  - **video_url** ： 可直达视频网页
+  - **download_url** ： 视频资源下载地址
+  - **channel** : 可能为频道，可能为keywords，具体在对应代码中找寻
+  - **else** : 这里为bilibili特有的信息
+    - **coins**：投币数
+    - **favs**：收藏数
+    - **shares**：转发数
 ### 网络信息标识体系
 
-- 可访问性(accessible) : 直接对URL进行http访问，HEAD 请求失败时降级为 GET 请求，返回状态码小于400, 即为可访问。可访问为为True，否则为False
-- 供应商(vendor) : 共三种结果可供参考
-  - whois ： 直接对域名进行查询
-  - dns解析 + ipwhois : 获取 A 记录中第一个 IP 地址，对ip地址进行ipwhois查询，得到
-    - entities 信息
-    - asn_description 信息
-- 功能性(function_description) : 参考资源类型，简介其主要功能
+- **可访问性(accessible)** : 直接对URL进行http访问，HEAD 请求失败时降级为 GET 请求，返回状态码小于400, 即为可访问。可访问为为True，否则为False
+- **供应商(vendor)** : 共三种结果可供参考
+  - **whois**： 直接对域名进行查询
+  - **dns解析 + ipwhois** : 获取 A 记录中第一个 IP 地址，对ip地址进行ipwhois查询，得到
+    - **entities 信息**
+    - **asn_description 信息**
+- **功能性(function_description)** : 参考资源类型，简介其主要功能
   - 资源类型主要分为两种
-    - resource_type ：  Playwright 用来分类网络请求的标准类型，主要有 “document，script” 等等。若其没有值，则启动人工自动分类，返回对应的resource_type,详情参考network_5.py中resource_function_mapping中的键值
-    - content_type ： 响应头headers中content_type值
-- 重要性(blocking_comment) : 通过查看请求启动器链，判断资源是否妨碍其他资源加载，妨碍为True，否则为False
+    - **resource_type** ：  Playwright 用来分类网络请求的标准类型，主要有 “document，script” 等等。若其没有值，则启动人工自动分类，返回对应的resource_type,详情参考network_5.py中resource_function_mapping中的键值
+    - **content_type** ： 响应头headers中content_type值
+- **重要性(blocking_comment)** : 通过查看请求启动器链，判断资源是否妨碍其他资源加载，妨碍为True，否则为False
 
-- **video_url** ： 可直达视频网页
-- **download_url** ： 视频资源下载地址
-- **channel** : 可能为频道，可能为keywords，具体在对应代码中找寻
-- **else** : 这里为bilibili特有的信息
-  - **coins**：投币数
-  - **favs**：收藏数
-  - **shares**：转发数
+
 
 ## 二. 环境搭建参考
 
