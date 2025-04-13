@@ -1,20 +1,17 @@
 from bs4 import BeautifulSoup
-
 from base.base_crawler import BaseCrawler
-from base.base_config import VIDEO_INFO_ALL
-
+from base.base_config import VIDEO_INFO_ALL, DownloadTask
 from tools.scraper_utils import dynamic_scroll
-
 from config.ku6Config import Ku6CrawlerConfig
 
 # 日志系统
 from config.config import *
 logger = logging.getLogger(__name__)
 
-class ku6Crawel(BaseCrawler):
+class Ku6Crawler(BaseCrawler):
 
     def _process_search(self, target: str):
-        logger.info("ku6网站无法search,请直接输入视频ID")
+        logger.info("ku6网站无法搜索，请直接输入视频ID")
         return
         
     def _process_video(self, target: str):
@@ -25,7 +22,7 @@ class ku6Crawel(BaseCrawler):
         # 固定内容赋值
         video_info.platform = self.config.PLATFORM              # [视频信息] 平台 - ku6Config          
         video_info.base_url = self.config.BASE_URL              # [视频信息] base_url - ku6Config
-        video_info.id = target                      # [视频信息] id = target
+        video_info.id = target                                  # [视频信息] id = target
 
         try:
             # 初始化页面
@@ -45,11 +42,22 @@ class ku6Crawel(BaseCrawler):
             video_info.download_url = video_src                 # [视频信息] download_url - 视频下载地址
             video_info.title = video_data_parts["title"]        # [视频信息] title - 视频标题
             video_info.channel = video_data_parts['channel']    # [视频信息] keywords
+            video_info.author = video_data_parts['author'] 
 
             self._save_videoinfo(video_info.dict_info_all(), target)
 
             # 视频下载
-            self._download_video(target ,video_src)
+            if self.mulithreaded_download:
+                task = DownloadTask(
+                    url=video_src,
+                    save_dir=self.config.OUTPUT_VIDEOMP4_DIR,
+                    filename=self.config.OUTPUT_VIDEOMP4_FILENAME.format(target),
+                    referer=self.config.BASE_URL
+                )
+
+                self.download_manager.add_task(task)
+            else:
+                self._download_video(target, video_src)
 
         except Exception as e:
             logger.exception(f"视频处理异常:{e}")
@@ -60,6 +68,11 @@ class ku6Crawel(BaseCrawler):
         try:
             soup = BeautifulSoup(html_content, "html.parser")
             # 获取title
+            from pathlib import Path
+            # debug_file = Path("./debug") / f"ku6.html"
+            # debug_file.parent.mkdir(parents=True, exist_ok=True)
+            # with open(debug_file, "w", encoding="utf-8") as f:
+            #     f.write(html_content)
             title_tag = soup.find("title")
             title  = title_tag.text.strip() if title_tag else "无标题"
 
@@ -70,12 +83,14 @@ class ku6Crawel(BaseCrawler):
             # 获取视频链接
             video_tag = soup.find('video', class_='vjs-tech')
             video_src = video_tag['src'] if video_tag else None
-
+            author_div = soup.find("div", id="video-pc-author")
+            author_name = author_div.text.strip() if author_div else None
             # 输出提取的信息
             video_data = {
                 "title":title,
                 "channel":channel,
-                "video_url":video_src
+                "video_url":video_src,
+                "author":author_name
             }
 
             logger.info(f"视频信息提取成功")
@@ -97,16 +112,31 @@ class ku6Crawel(BaseCrawler):
 if __name__ == "__main__":
 
     config = Ku6CrawlerConfig()
+
+    id_list = [
+        "QdRTpiXkNC6iPrVnhaN5_tCg5UI.",
+        "ni0ugYAYIldNml76-_y8x-W8Hjk",
+        "SxLQmoafMS1x2y59w87Ugm58nOg.",
+        "cqBR04avXAz8zshJcT20OeXib_0."
+    ]
+
     def test_search():
-        """正常搜索测试"""
+        """正常测试"""
         try:
-            crawler = ku6Crawel(config = config)
-            crawler.crawl("video", "ni0ugYAYIldNml76-_y8x-W8Hjk")
+            crawler = Ku6Crawler(config = config, mulithreaded_download=True)
+            for video_id in id_list:
+                crawler.crawl("video", video_id)
+
+            crawler.download_manager.finish_adding_tasks()
+            crawler.download_manager.wait_for_all_and_stop()
+            print("所有视频下载完成")
             print("测试成功完成")
             return True
         except Exception as e:
             print(f"测试失败: {str(e)}")
             return False
+        
+
 
     # 执行测试
     print("--- 执行正常搜索测试 ---")
