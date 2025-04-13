@@ -6,12 +6,12 @@ from base.base_config import VIDEO_INFO_ALL, DownloadTask
 
 from tools.scraper_utils import dynamic_scroll
 
-
 from config.haokanConfig import HaokanCrawlerConfig
 
 # 日志系统
 from config.config import *
 logger = logging.getLogger(__name__)
+
 
 class HaokanCrawler(BaseCrawler):
 
@@ -40,7 +40,7 @@ class HaokanCrawler(BaseCrawler):
                 except Exception as e:
                     logger.error(f"======[{self.config.PLATFORM}]第{idex+1}个视频/新闻处理异常======")
                     continue
-
+            # 
             # if self.mulithreaded_download:
             #     self.download_manager.finish_adding_tasks()
             #     logger.info(f"======[{self.config.PLATFORM}]已达到最大视频处理数量，停止添加======")
@@ -99,7 +99,8 @@ class HaokanCrawler(BaseCrawler):
             self._pre_page_handle(video_url)
 
             html_content = self.page.content()
-            
+
+            # from pathlib import Path
             # debug_file = Path("./debug") / f"haokanvideo_{target}.html"
             # debug_file.parent.mkdir(parents=True, exist_ok=True)
             # with open(debug_file, "w", encoding="utf-8") as f:
@@ -126,13 +127,16 @@ class HaokanCrawler(BaseCrawler):
             desc_element = soup.find("meta", {"itemprop": "description"})
             desc = desc_element.text.strip() if desc_element else None
             
-            author_element = soup.find("div", class_="videoinfo-author-name")
+            author_element = soup.find("a", href=lambda x: x and x.startswith("/author/"))
             author = author_element.text.strip() if author_element else None
             
-            time_element = soup.find("span", class_="videoinfo-playtime")
-            publish_time = time_element.text.strip() if time_element else None
+            time_element = soup.find("div", class_="extrainfo-playnums")
+            if time_element:
+                publish_time = time_element.find("span", class_="extrainfo-playnums-label").next_sibling.strip()
+            else:
+                publish_time = None
             
-            duration_element = soup.find("span", class_="duration")
+            duration_element = soup.find("span", class_="durationTime")
             duration = duration_element.text.strip() if duration_element else None
             
             keywords_meta = soup.find("meta", {"itemprop": "keywords"})
@@ -210,8 +214,6 @@ class HaokanCrawler(BaseCrawler):
 
 # 测试实例
 # 命令行输入：python -m core.haokan_crawler
-
-# 在search时可能会出现0条数据的情况，请多次尝试运行上述代码，代码健壮性正在完善中......
 
 if __name__ == "__main__":
 
