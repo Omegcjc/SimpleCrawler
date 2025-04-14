@@ -23,10 +23,6 @@ class IfengCrawler(BaseCrawler):
 
             # 转到视频界面，并提取所有视频src,返回List[results]和视频数量
             results, length = self._process_search_to_videolist(target)
-
-            # 爬取视频数量，
-            if length > self.max_video_num:
-                results = results[:self.max_video_num]
             
             done = 0
             for idex, video in enumerate(results):
