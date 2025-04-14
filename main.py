@@ -8,6 +8,7 @@ from core.ifeng_crawler import IfengCrawlerConfig, IfengCrawler
 from core.thepaper_crawler import ThepaperCrawlerConfig, ThepaperCrawler
 
 from core.cctv_crawler import CCTVCrawler
+from core.xiaodutv_crawler import BaisouCrawler
 
 from cli_parser import CLIParser
 
@@ -83,15 +84,19 @@ class CrawlerManager:
             "haokan": (HaokanCrawlerConfig, HaokanCrawler),
             "ifeng": (IfengCrawlerConfig, IfengCrawler),
             "thepaper": (ThepaperCrawlerConfig, ThepaperCrawler),
-            "cctv": ("cctv", CCTVCrawler)
+            "cctv": ("cctv", CCTVCrawler),
+            "baisou":("baisou", BaisouCrawler)
         }
 
     def _run_crawler(self, config_class, crawler_class, crawl_type, target, mulithreaded:bool = False):
         """运行爬虫"""
         if config_class == "cctv":
             CCTVCrawler(crawl_type, target)
-            return 
+            return
 
+        if config_class == "baisou":
+            BaisouCrawler(crawl_type, target)
+            return 
 
         config = config_class()
         crawler = crawler_class(config = config, mulithreaded_download=mulithreaded)
