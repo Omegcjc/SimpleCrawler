@@ -1,5 +1,3 @@
-# wjx
-
 import requests
 import re
 from lxml import etree
@@ -35,7 +33,6 @@ class ContentCrawler(object):
         self.display = ScreenDisplay()
         self.config = {
             'browser_core': 'chromium',
-            'browser_opensource': False,
             'browser_dir': r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe',
         }
         self.playwright_need = {
@@ -43,7 +40,6 @@ class ContentCrawler(object):
         }
         self.mode = None
         self.search_key = None
-
     @staticmethod
     def pure_domain(url, slash=False):
         url = url.strip(' \n')
@@ -55,7 +51,6 @@ class ContentCrawler(object):
         else:
             result = 'https://' + domain[0] + slash_string
         return result
-    
     @staticmethod
     def pure_url(url, question_mark=False):
         url = url.strip(' \n')
@@ -65,7 +60,6 @@ class ContentCrawler(object):
         except:
             result = re.match(r'(http|https)://[^\?]+', url).group()
         return result
-    
     @staticmethod
     def convert_ts_to_mp4(ts_file=None, out_file=None):
         """
@@ -74,10 +68,6 @@ class ContentCrawler(object):
         :param ts_file:
         :return:
         """
-
-        print(ts_file)
-        print(out_file)
-        # 检查输入文件是否存在
         command_series = []
         if isinstance(ts_file, list):
             for file in ts_file:
@@ -95,25 +85,18 @@ class ContentCrawler(object):
         # 构建FFmpeg命令
         if out_file is None:
             out_file = ts_file.rsplit('.', 1)[0] + '.mp4'
-
-        print(f"new_outfile = {out_file}")
-
         command = ['ffmpeg'] + command_series + [
             '-c:v', 'copy',  # 视频编码器设置为复制
             '-c:a', 'copy',  # 音频编码器设置为复制
             '-movflags', '+faststart',  # 优化MP4文件以便于网络播放
             out_file  # 输出文件
         ]
-
-        print(f"command = {command}")
         try:
             # 执行FFmpeg命令
-            subprocess.run(command, check=True, encoding='utf-8')
-            # subprocess.run(command, check=True)
+            subprocess.run(command, check=True)
             logging.info(f"成功将 {ts_file} 转换为 {out_file}")
         except subprocess.CalledProcessError as e:
             logging.error(f"转换失败: {e}")
-    
     @staticmethod
     def output(video_list: list, output_path: str = None, mode='json') -> list:
         """
@@ -250,21 +233,25 @@ class ContentCrawler(object):
 
         def output_csv(v_list: list, output_path: str = output_path) -> None:
             nonlocal keys
-            with open(output_path, 'a+', encoding='gbk') as f:
+            with open(output_path, 'w+', encoding='utf-8') as f:
                 for key in keys:
                     f.write(key)
                     f.write(',')
                 f.write('\n')
                 for v in v_list:
                     for key in keys:
-                        f.write(re.sub(r',', '，', v[key]))
+                        try:
+                            str = re.sub(r',', '，', v[key])
+                            str = re.sub(r'\n', '', str)
+                            f.write(re.sub(r',', '，', str))
+                        except:
+                            f.write('该项数据错误')
                         f.write(',')
                     f.write('\n')
 
         if mode == 'csv':
             output_csv(v_list=result, output_path=output_path)
         return result
-    
     @staticmethod
     def filename(title: str, mode: str = None, suffix: str  = None, direct = 2, via: str  = None, platform: str  = None) -> dict:
         r"""
@@ -314,7 +301,6 @@ class ContentCrawler(object):
             'data_dir': data_dir,
             'output_path': output_path,
         }
-    
     @classmethod
     def mode_wrapper(cls, mode):
         def decorator(func):
@@ -330,7 +316,6 @@ class ContentCrawler(object):
                 return result
             return wrapper
         return decorator
-    
     @classmethod
     def search_key_wrapper(cls, func):
         @wraps(func)
@@ -344,7 +329,6 @@ class ContentCrawler(object):
                 args[0].search_key = None
             return result
         return wrapper
-    
     def get_content(self, url=None, xpath=None, decode=True):
         logging.debug('get_content')
         if url is None:
@@ -356,13 +340,11 @@ class ContentCrawler(object):
         if xpath:
             result['content'] = etree.HTML(result['content']).xpath(xpath + '/text()')[0]
         return result
-    
     def get_document(self, url=None, decode=True):
         try:
             return self.get_content_requests(url=url, decode=decode)
         except:
             return self.get_content_playwright(url=url, decode=decode)
-    
     def get_content_requests(self, url=None, decode=True):
         logging.debug('get_content_requests')
         if url is None:
@@ -401,7 +383,6 @@ class ContentCrawler(object):
         except AttributeError:
             pass
         return {'content': result, 'engine': 'requests', 'url': url}
-    
     def get_content_playwright(self, url=None, decode=True):
         need = []
         global len
@@ -491,7 +472,6 @@ class ContentCrawler(object):
         except AttributeError:
             pass
         return {'content': result, 'engine': 'requests', 'url': url}
-    
     def get_content_selenium(self, url=None, xpath=None, browser='Chrome'):
         logging.debug('get_content_selenium')
         if url is None:
@@ -509,7 +489,6 @@ class ContentCrawler(object):
         content = driver.page_source
         driver.quit()
         return {'content': content, 'engine': 'selenium', 'url': url, 'redirect': redirect_url}
-    
     def _playright_response(self, response) -> None:
         """
         这是一个通用的处理每一个响应.
@@ -557,7 +536,6 @@ class ContentCrawler(object):
                     'content': content,
                     'length': length,
                 })
-    
     def get_media_requests_and_playwright(self, url, register_function: dict) -> dict:
         """
         这是一个通用框架, 逻辑是 playwright 捕获 media 响应的请求头, 再用 requests 去请求 media
@@ -593,82 +571,84 @@ class ContentCrawler(object):
 
         # 启动 node 和浏览器以及页面
         driver = sync_playwright().start()
-        if self.config['browser_core'] == 'chromium':
-            browser = driver.chromium.launch(
-                headless=False,
-                executable_path=self.config['browser_dir']
-            )
-        elif self.config['browser_core'] == 'firefox':
-            browser = driver.firefox.launch(
-                headless=False,
-                executable_path=self.config['browser_dir']
-            )
-        elif self.config['browser_core'] == 'webkit':
-            browser = driver.webkit.launch(
-                headless=False,
-                executable_path=self.config['browser_dir']
-            )
-        else:
-            raise ValueError('请使用 playwright 支持的浏览器内核')
-        context = browser.new_context()
-        page = context.new_page()
-        page.set_viewport_size({"width": 1800, "height": 1000})
+        try:
+            if self.config['browser_core'] == 'chromium':
+                browser = driver.chromium.launch(
+                    headless=False,
+                    executable_path=self.config['browser_dir']
+                )
+            elif self.config['browser_core'] == 'firefox':
+                browser = driver.firefox.launch(
+                    headless=False,
+                    executable_path=self.config['browser_dir']
+                )
+            elif self.config['browser_core'] == 'webkit':
+                browser = driver.webkit.launch(
+                    headless=False,
+                    executable_path=self.config['browser_dir']
+                )
+            else:
+                raise ValueError('请使用 playwright 支持的浏览器内核')
+            context = browser.new_context()
+            page = context.new_page()
+            page.set_viewport_size({"width": 1800, "height": 1000})
 
-        # 侦听响应事件
-        # 如果在 initial_playwright 中没有指定响应处理函数的话, 自动捕获所有的 html 和 mp4
-        context.on('response', self._playright_response)
+            # 侦听响应事件
+            # 如果在 initial_playwright 中没有指定响应处理函数的话, 自动捕获所有的 html 和 mp4
+            context.on('response', self._playright_response)
 
-        page.goto(url)
+            page.goto(url)
 
-        page.wait_for_timeout(1000)
+            page.wait_for_timeout(1000)
 
-        # 点击播放按钮
-        if register_function['click_play'] is not None:
-            register_function['click_play'](browser, context, page)
-        else:
-            # 如果不传入点击播放的函数, 视为视频自动播放
-            pass
+            # 点击播放按钮
+            if register_function['click_play'] is not None:
+                register_function['click_play'](browser, context, page)
+            else:
+                # 如果不传入点击播放的函数, 视为视频自动播放
+                pass
 
-        result = dict()
+            result = dict()
 
-        # 获取时长
-        result['duration'] = None
-        if register_function['get_duration'] is not None:
-            result.update(register_function['get_duration'](browser, context, page))
-        else:
-            # 如果不传入获取时长的函数, 视为这里不需要获取时长
-            pass
+            # 获取时长
+            result['duration'] = None
+            if register_function['get_duration'] is not None:
+                result.update(register_function['get_duration'](browser, context, page))
+            else:
+                # 如果不传入获取时长的函数, 视为这里不需要获取时长
+                pass
 
-        page.wait_for_timeout(2000)
+            page.wait_for_timeout(2000)
 
-        # 这里根据传递响应内容的列表的情况得出需要等待的条件
-        # 也可以利用 browser, context, page
-        while register_function['waiting_condition'](self, browser, context, page):
-            pass
+            # 这里根据传递响应内容的列表的情况得出需要等待的条件
+            # 也可以利用 browser, context, page
+            while register_function['waiting_condition'](self, browser, context, page):
+                pass
 
-        # 从列表和各种地方获取信息
-        # 注意这里需要在函数中修改 self.headers
-        result['video_url'] = url
-        if register_function['integreted_handle'] is not None:
-            result.update(register_function['integreted_handle'](self, browser, context, page))
-        else:
-            # 这里没有注册函数视为下载视频不需要 headers
-            self.headers = None
+            # 从列表和各种地方获取信息
+            # 注意这里需要在函数中修改 self.headers
+            result['video_url'] = url
+            if register_function['integreted_handle'] is not None:
+                result.update(register_function['integreted_handle'](self, browser, context, page))
+            else:
+                # 这里没有注册函数视为下载视频不需要 headers
+                self.headers = None
 
-        # 使用 requests 下载视频
-        if register_function['request_for_video'] is not None:
-            dn_result = register_function['request_for_video'](self, browser, context, page)
-        else:
-            # 这里没有注册函数视为直接下载整个视频
-            dn_url = result['download_url']
-            del self.headers['range']
-            dn_result = requests.get(dn_url, headers=self.headers)
+            # 使用 requests 下载视频
+            if register_function['request_for_video'] is not None:
+                dn_result = register_function['request_for_video'](self, browser, context, page)
+            else:
+                # 这里没有注册函数视为直接下载整个视频
+                dn_url = result['download_url']
+                del self.headers['range']
+                dn_result = requests.get(dn_url, headers=self.headers)
 
-        logging.debug((str(dn_result.url)))
-        logging.debug(str(dn_result.status_code))
+            logging.debug((str(dn_result.url)))
+            logging.debug(str(dn_result.status_code))
 
-        browser.close()
-        driver.stop()
+            browser.close()
+        finally:
+            driver.stop()
 
         self.playwright_need['response_handle'] = None
 
@@ -703,15 +683,9 @@ class ContentCrawler(object):
                 f.write(dn_result.content)
 
         return result
-    
     def search_list(self, keyword, number):
-
-        # keyword = 关键字
-        # number = 搜索数量
         pass
-    
     def search_video_id(self, video_id):
-        # video_id = 视频 ID
         pass
 
 
