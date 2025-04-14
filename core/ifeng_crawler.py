@@ -28,23 +28,33 @@ class IfengCrawler(BaseCrawler):
             if length > self.max_video_num:
                 results = results[:self.max_video_num]
             
+            done = 0
             for idex, video in enumerate(results):
-                logger.info(f"======第{idex+1}个视频开始处理======")
-                # 访问单个视频对应链接
-                href_link = video['href']
-                self._pre_page_handle(href_link)
 
-                all_data = self.page.evaluate('''() => {
-                    return allData || {};
-                }''')
+                if done >= self.max_video_num:
+                    logger.info(f"已达到最大视频数量限制：{self.max_video_num}")
+                    break
+                try:
+                    logger.info(f"======第{idex+1}个视频开始处理======")
+                    # 访问单个视频对应链接
+                    href_link = video['href']
+                    self._pre_page_handle(href_link)
 
-                ID = all_data['docData']['base62Id']
-                if ID:
-                    self._process_video(ID)
-                    logger.info(f"======第{idex+1}个视频处理完成======")
-                else:
-                    logger.error(f"******第{idex+1}个视频处理异常******")
-                    continue # 等全部处理完
+                    all_data = self.page.evaluate('''() => {
+                        return allData || {};
+                    }''')
+
+                    ID = all_data['docData']['base62Id']
+                    if ID:
+                        self._process_video(ID)
+                        done += 1
+                        logger.info(f"======第{idex+1}个视频处理完成======")
+                    else:
+                        logger.error(f"******第{idex+1}个视频处理异常******")
+                        continue # 等全部处理完
+                except Exception as e:
+                    logger.error(f"第{idex+1}个视频处理异常")
+                    continue
         except Exception as e:
             logger.error(f"发生错误：{e}")
             raise
