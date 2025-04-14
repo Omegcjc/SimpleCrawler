@@ -175,6 +175,7 @@ if __name__ == "__main__":
 #                         指定目标（搜索关键词或视频ID，多个ID用英文逗号分隔）
 #   --multithreaded       是否启用多线程下载（默认不启用）
 
+# 需要配置SESSDATA，即cookies,部分爬虫无需配置cookies也可运行
 # 示例命令行输入：
 # python main.py -p bilibili -m search -t "python爬虫"
 # python main.py -p ku6 -m video -t "QdRTpiXkNC6iPrVnhaN5_tCg5UI." --multithreaded  # 启用多线程下载
