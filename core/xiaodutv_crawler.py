@@ -15,6 +15,7 @@ import os
 from playwright.sync_api import sync_playwright
 from pprint import pprint
 import logging
+
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -139,7 +140,7 @@ class Baisou(ContentCrawler):
                 new_result = queue.get()
                 try:
                     vd[new_result['index']].update({'redirect': new_result['redirect']})
-                    logging.debug(f'!!!!!!!!! change videos by child !!! {new_result['index']}')
+                    logging.debug(f"!!!!!!!!! change videos by child !!! {new_result['index']}")
                     # 输出进度条 !!!!!!!!!
                     with lock:
                         display = queue_jindu.get()
@@ -249,7 +250,7 @@ class Baisou(ContentCrawler):
             # print(len(videos), new_result['index'])
             try:
                 videos[new_result['index']].update({'redirect': new_result['redirect']})
-                logging.debug(f'!!!!!!!!! change videos by parent !!! {new_result['index']}')
+                logging.debug(f"!!!!!!!!! change videos by parent !!! {new_result['index']}")
             except:
                 logging.error(f'!!!!!!!!! change videos error by parent {new_result}', exc_info=True)
             # 输出进度条 !!!!!!!!!
