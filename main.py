@@ -158,7 +158,7 @@ if __name__ == "__main__":
     print("  - bilibili不支持multithreaded下载视频")
     print("  - ku6不支持search,且单个视频因文件较大，下载较慢，建议启用多线程")
     print("  - thepaper搜索得到的结果包含视频和新闻，只爬取视频")
-    print("  - xiaodutv搜索得到的结果包含多个视频网站的结果，种类较多，爬取视频过程中有些网站不支持)
+    print("  - xiaodutv搜索得到的结果包含多个视频网站的结果，种类较多，爬取视频过程中有些网站不支持")
     
     main()
 
